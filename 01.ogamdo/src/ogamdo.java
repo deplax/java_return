@@ -4,18 +4,19 @@ public class ogamdo {
 	public static void main(String[] args)
 	{
 		int ahae = 13;
+		String scare = "인의 아해가 무섭다고 그리오.";
 		System.out.println(ahae + "인의 아해가 도로로 질주하오.");
 		System.out.println("(길은 막다른 골목이 적당하오.)\n");
 		
 		for(int i = 1; i <= ahae; i++ )
 			if(i == 1)
-				System.out.println("제" + i + "의 아해가 무섭다고 그리오.");
+				System.out.println("제" + i + scare);
 			else if(i == 10)
 			{
-				System.out.println("제" + i + "의 아해도 무섭다고 그리오.");
+				System.out.println("제" + i + scare);
 				System.out.println();
 			}else
-				System.out.println("제" + i + "의 아해도 무섭다고 그리오.");
+				System.out.println("제" + i + scare);
 		
 		System.out.println(ahae +"인의 아해는 무서운 아해와 무서워하는 아해와 그렇게 뿐이 모였소.");
 		System.out.println("(다른 사정은 없는 것이 차라리 나았소)\n");
