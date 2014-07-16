@@ -1,0 +1,11 @@
+
+public class Calc {
+	int add(int i, int j) {
+		return i + j;
+	}
+
+	public static void main(String[] args) {
+		Calc cal = new Calc();
+		System.out.println(cal.add(1, 2));
+	}
+}

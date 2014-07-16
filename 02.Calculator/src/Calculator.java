@@ -88,6 +88,7 @@
 //	}
 //}
 
+/////////////////////////////////////////////////////////////////////
 class Calculator{
 	int num;
 	
@@ -127,8 +128,12 @@ class Calculator{
 	}
 }
 
+//
 //Calculator add(int operand){
 //	Calculator cal = new Calculator(num);
 //	cal.num += operand;
 //	return cal;
 //}
+
+///////////////////////////////////////////////////////////////////
+

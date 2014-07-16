@@ -26,8 +26,8 @@ public class ogamdo {
 			if( j < 2 )
 				System.out.println("그중에 " + (j + 1) + "인의 아해가 무서운 아해라도 좋소.");
 			else
-				System.out.println("그중에 " + (j * 2 + 1) % 3 +"인의 아해가 무서워하는 아해라도 좋소.");
 			j++;
+			System.out.println("그중에 " + (j * 2 + 1) % 3 +"인의 아해가 무서워하는 아해라도 좋소.");
 		}
 		System.out.println("(길은 뚫린 골목이라도 적당하오.)\n");
 		System.out.println(ahae + "인의 아해가 도로로 질주하지 아니 하여도 좋소.");
