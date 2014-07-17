@@ -1,34 +1,28 @@
-import java.lang.reflect.Array;
-
 class Marker {
 	private int x;
 	private int y;
-	Marker(){
-		x = 0;
-		//y = line;
+
+	Marker(int line) {
+		x = -1;
+		y = line - 1;
 	}
 
-	Marker moveLeft() {
-		Marker marker = new Marker();
-		x--;
-		return marker;
+	void moveLeft() {
+		y--;
 	}
 
-	Marker moveRight() {
-		Marker marker = new Marker();
-		x++;
-		return marker;
-	}
-
-	Marker moveDown() {
-		Marker marker = new Marker();
+	void moveRight() {
 		y++;
-		return marker;
+	}
+
+	void moveDown() {
+		x++;
 	}
 
 	int getXPosition() {
 		return x;
 	}
+
 	int getYPosition() {
 		return y;
 	}
@@ -41,59 +35,83 @@ class Marker {
 }
 
 class Mover {
-	Marker marker = new Marker();
-	void checkLadder(int[][] ladder){
-		int curX = marker.getXPosition();
-		int curY = marker.getYPosition();
-		
-		//오른쪽인지 왼쪽인지 중앙인지 판단
-		//결과에 따라 마커를 이동;
+
+	Marker marker;
+
+	Mover(int line) {
+		marker = new Marker(line);
 	}
-	
-	void checkLadderLine(int[][] ladder)
-	{
-		if(marker.getYPosition() == 0)		//왼쪽벽에 붙었다!!
+
+	int checkLadderLinePos(int[][] ladder) {
+		if (marker.getYPosition() == 0) // ���� ������ ��
 		{
-			//오른쪽만 검사
-		}else if(marker.getYPosition() == ladder.length)	//오른쪽벽에 붙었다.
+			return 1;
+		} else if (marker.getYPosition() == ladder[0].length - 1) // ������ ������ ��
 		{
-			//아래만 검사
-		}else
-		{
-			//오른쪽, 아래 검사
+			return -1;
 		}
+		return 0;
+	}
+
+	boolean checkRight(int[][] ladder) {
+		if (ladder[marker.getXPosition() + 1][marker.getYPosition()] == 1)
+			return true;
+		return false;
+	}
+
+	boolean checkLeft(int[][] ladder) {
+		if (ladder[marker.getXPosition() + 1][marker.getYPosition() - 1] == 1)
+			return true;
+		return false;
+	}
+
+	void moving(int[][] ladder) {
+		int linePos = checkLadderLinePos(ladder);
+		if (linePos == 1) {
+			if (checkRight(ladder))
+				marker.moveRight();
+		} else if (linePos == -1) {
+			if (checkLeft(ladder))
+				marker.moveLeft();
+		} else {
+			if (checkLeft(ladder)) {
+				marker.moveLeft();
+			} else if (checkRight(ladder)) {
+				marker.moveRight();
+			}
+		}
+		marker.moveDown();
 	}
 
 }
 
 public class Ladder {
-	
+
 	int[][] ladder;
-	
+
 	Ladder() {
 		ladder = new int[4][3];
 		ladder[0][0] = 1;
 		ladder[1][1] = 1;
-		ladder[2][1] = 1;
+		ladder[2][0] = 1;
 		ladder[3][1] = 1;
 	}
 
-	int rideLadder(int line) {
-		Mover mover = new Mover();
-		mover.marker.getPosition();
-		
-		//무버가 사다리를 검사할꺼야
-		//그리고 어디로 가야되는지
-		//마커한테 알려줄꺼야
-		//그리고 마커가 움직일꺼야
-		
-		
-		return 0;
+	void rideLadder(int line) {
+		Mover mover = new Mover(line);
+
+		for (int i = 0; i < ladder.length; i++) {
+			mover.moving(ladder);
+		}
+
+		int result = mover.marker.getYPosition() + 1;
+		System.out.println(result);
 	}
 
 	public static void main(String[] args) {
 
-		// TODO Auto-generated method stub
+		Ladder ladder = new Ladder();
+		ladder.rideLadder(1);
 
 	}
 
