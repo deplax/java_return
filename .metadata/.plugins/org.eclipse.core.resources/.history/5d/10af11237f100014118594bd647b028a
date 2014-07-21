@@ -11,22 +11,17 @@ class Marker {
 	}
 
 	void moveLeft() {
-		if (!move) {
-			y--;
-			move = true;
-		}
+		move = true;
+		y--;
 	}
 
 	void moveRight() {
-		if (!move) {
-			y++;
-			move = true;
-		}
+		move = true;
+		y++;
 	}
 
 	void moveDown() {
 		x++;
-		move = false;
 	}
 
 	int getXPosition() {
@@ -52,35 +47,46 @@ class Mover {
 	}
 
 	int checkLadderLinePos(int[][] ladder) {
-		if (marker.getYPosition() == 0) // 왼쪽 라인일 때
+		if (marker.getYPosition() == 0) 									// 왼쪽 라인일 때
+		{
 			return 1;
-		if (marker.getYPosition() == ladder[0].length - 1) // 오른쪽 라인일 때
+		} else if (marker.getYPosition() == ladder[0].length - 1) 			// 오른쪽 라인일 때
+		{
 			return -1;
+		}
 		return 0;
 	}
 
-	void checkRight(int[][] ladder) {
+	boolean checkRight(int[][] ladder) {
 		if (ladder[marker.getXPosition() + 1][marker.getYPosition()] == 1)
-			marker.moveRight();
+			return true;
+		return false;
 	}
 
-	void checkLeft(int[][] ladder) {
+	boolean checkLeft(int[][] ladder) {
 		if (ladder[marker.getXPosition() + 1][marker.getYPosition() - 1] == 1)
-			marker.moveLeft();
+			return true;
+		return false;
 	}
 
 	void moving(int[][] ladder) {
 		int linePos = checkLadderLinePos(ladder);
-		if (linePos == 1)
-			checkRight(ladder);
-		if (linePos == -1)
-			checkLeft(ladder);
-		if (linePos == 0) {
-			checkRight(ladder);
-			checkLeft(ladder);
+		if (linePos == 1) {
+			if (checkRight(ladder))
+				marker.moveRight();
+		} else if (linePos == -1) {
+			if (checkLeft(ladder))
+				marker.moveLeft();
+		} else {
+			if (checkLeft(ladder)) {
+				marker.moveLeft();
+			} else if (checkRight(ladder)) {
+				marker.moveRight();
+			}
 		}
 		marker.moveDown();
 	}
+
 }
 
 public class Ladder {
@@ -106,15 +112,15 @@ public class Ladder {
 		System.out.print(">");
 		sc = new Scanner(System.in);
 		str = sc.next();
-		if (tryConvertToInt(str) && checkBound())
+		if(tryConvertToInt(str) && checkBound())
 			rideLadder();
 	}
 
-	boolean tryConvertToInt(String str) {
-		try {
+	boolean tryConvertToInt(String str){
+		try{
 			line = Integer.parseInt(str);
 			return true;
-		} catch (NumberFormatException e) {
+		}catch(NumberFormatException e){
 			System.out.println(e.getMessage());
 			System.out.println("프로그램을 종료합니다.");
 			exit();
@@ -122,42 +128,47 @@ public class Ladder {
 		}
 	}
 
-	boolean checkBound() {
-		if (line > 0 && line <= ladder[0].length)
+	boolean checkBound()
+	{
+		if(line > 0 && line <= ladder[0].length)
 			return true;
-		System.out.println("사다리 입력 범위를 초과하였습니다. [입력범위 : 0 - "
-				+ ladder[0].length + "]");
+		System.out.println("사다리 입력 범위를 초과하였습니다. [입력범위 : 0 - " + ladder[0].length + "]");
 		return false;
 	}
 
 	void rideLadder() {
 		Mover mover = new Mover(line);
 
-		for (int i = 0; i < ladder.length; i++)
+		for (int i = 0; i < ladder.length; i++) {
 			mover.moving(ladder);
+		}
 
 		int result = mover.marker.getYPosition() + 1;
 		System.out.println(result);
 	}
 
-	void printLadder() {
+	void printLadder(){
 
 	}
 
-	void exit() {
+	void exit()
+	{
 		exitSw = true;
 		sc.close();
 	}
 
-	boolean isExit() {
+	boolean isExit()
+	{
 		return exitSw;
 	}
 
 	public static void main(String[] args) {
 
 		Ladder ladder = new Ladder();
-		while (!ladder.isExit()) {
+		while(!ladder.isExit())
+		{
 			ladder.lineInput();
 		}
 	}
+
 }

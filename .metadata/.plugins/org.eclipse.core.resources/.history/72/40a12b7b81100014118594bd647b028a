@@ -53,9 +53,13 @@ class Mover {
 
 	int checkLadderLinePos(int[][] ladder) {
 		if (marker.getYPosition() == 0) // 왼쪽 라인일 때
+		{
 			return 1;
+		}
 		if (marker.getYPosition() == ladder[0].length - 1) // 오른쪽 라인일 때
+		{
 			return -1;
+		}
 		return 0;
 	}
 

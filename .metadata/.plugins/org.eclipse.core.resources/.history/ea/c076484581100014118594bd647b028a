@@ -53,31 +53,37 @@ class Mover {
 
 	int checkLadderLinePos(int[][] ladder) {
 		if (marker.getYPosition() == 0) // 왼쪽 라인일 때
+		{
 			return 1;
+		}
 		if (marker.getYPosition() == ladder[0].length - 1) // 오른쪽 라인일 때
+		{
 			return -1;
+		}
 		return 0;
 	}
 
-	void checkRight(int[][] ladder) {
+	boolean checkRight(int[][] ladder) {
 		if (ladder[marker.getXPosition() + 1][marker.getYPosition()] == 1)
-			marker.moveRight();
+			return true;
+		return false;
 	}
 
-	void checkLeft(int[][] ladder) {
+	boolean checkLeft(int[][] ladder) {
 		if (ladder[marker.getXPosition() + 1][marker.getYPosition() - 1] == 1)
-			marker.moveLeft();
+			return true;
+		return false;
 	}
 
 	void moving(int[][] ladder) {
 		int linePos = checkLadderLinePos(ladder);
 		if (linePos == 1)
-			checkRight(ladder);
+			marker.moveRight();
 		if (linePos == -1)
-			checkLeft(ladder);
+			marker.moveLeft();
 		if (linePos == 0) {
-			checkRight(ladder);
-			checkLeft(ladder);
+			marker.moveLeft();
+			marker.moveRight();
 		}
 		marker.moveDown();
 	}
