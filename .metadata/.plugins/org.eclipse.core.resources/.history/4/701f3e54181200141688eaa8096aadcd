@@ -9,7 +9,7 @@ class Ring {
 
 class Post {
 	// 오동나무로 만든 나무기둥
-	private LinkedList<Ring> rings = new LinkedList<Ring>();
+	LinkedList<Ring> rings = new LinkedList<Ring>();
 
 	Post() {
 		rings = new LinkedList<Ring>(); 
@@ -26,8 +26,8 @@ class Post {
 
 class Bridge {
 	// 오동나무로 만든 브릿지
-	private Ring leftRing;
-	private Ring rightRing;
+	Ring leftRing;
+	Ring rightRing;
 
 	Bridge() {
 		leftRing.bridge = this;
@@ -47,17 +47,6 @@ public class Ladder {
 
 	void makeLadder() {
 		// 사람수만큼 기둥을 세운다.
-		Post post1 = new Post();
-		Post post2 = new Post();
-		linkBridge(post1, post2);
-	}
-	void linkBridge(Post post1, Post post2)
-	{
-		Bridge bridge = new Bridge();
-		bridge.setLeftRing(post1);
-		bridge.setRightRing(post2);
-		post1.setRing(bridge);
-		post2.setRing(bridge);
 	}
 
 	public static void main(String[] args) {

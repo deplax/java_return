@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="CalcTest (1)" project="StringCalc" tests="5" started="5" failures="0" errors="0" ignored="0">
-  <testsuite name="CalcTest" time="0.012">
-    <testcase name="testAddWhenTwoNumber" classname="CalcTest" time="0.011"/>
-    <testcase name="testAddWhenThreeNumber" classname="CalcTest" time="0.0"/>
-    <testcase name="testAddWhenEmpty" classname="CalcTest" time="0.0"/>
-    <testcase name="testAddWhenOneNumber" classname="CalcTest" time="0.001"/>
-    <testcase name="testAddWhenThreeNumberNNewLine" classname="CalcTest" time="0.0"/>
-  </testsuite>
-</testrun>
