@@ -1,0 +1,110 @@
+import java.util.Scanner;
+import java.util.LinkedList;
+
+class Ring {
+	// 티타늄으로 만든 고리
+	Bridge bridge;
+	Post post;
+}
+
+class Post {
+	// 오동나무로 만든 나무기둥
+	private LinkedList<Ring> rings = new LinkedList<Ring>();
+
+	Post() {
+		rings = new LinkedList<Ring>();
+	}
+
+	void setRing(Bridge bridge) {
+		Ring ring = new Ring();
+		ring.post = this;
+		ring.bridge = bridge;
+		rings.add(ring);
+		// add를 시켜주면 구멍을 뚫고 링을 끼워줘
+	}
+}
+
+class Bridge {
+	// 오동나무로 만든 브릿지
+	private Ring leftRing;
+	private Ring rightRing;
+
+	Bridge() {
+		leftRing.bridge = this;
+		rightRing.bridge = this;
+	}
+
+	void setLeftRing(Post post) {
+		leftRing.post = post;
+	}
+
+	void setRightRing(Post post) {
+		rightRing.post = post;
+	}
+}
+
+public class Ladder {
+
+	private LinkedList<Post> posts;
+
+	void makeLadder(int line) {
+		// 사람수만큼 기둥을 세운다.
+		posts = new LinkedList<Post>();
+		for (int i = 0; i < line; i++) {
+			Post p = new Post();
+			posts.add(p);
+		}
+		linkBridge(posts.get(0), posts.get(1));
+	}
+
+	void linkBridge(Post post1, Post post2) {
+		Bridge bridge = new Bridge();
+		bridge.setLeftRing(post1);
+		bridge.setRightRing(post2);
+		post1.setRing(bridge);
+		post2.setRing(bridge);
+	}
+
+	void printLadder() {
+		// 두개의 포인트를 받아서 이쁘게 출력하는게 필요
+		// 내가 알 수 있는 건 2개 포인트야!!
+		int[][] grid = new int[50][50];
+		int x1, x2, y1, y2;
+		x1 = 25;
+		y1 = 50;
+		
+		x2 = 50;
+		y2 = 50;
+
+		int x, y;
+
+		// (|y1-y2|)/2 * cos(pi/(|x2-x1|)t) + ((|y1-y2|)/2)
+		// t 구간이 0 ~ pi
+		
+		for (int i = x1; i < x2 - 1; i++) {
+			x = (int)(Math.PI / grid.length * i);
+			y = (int) ((Math.abs(y1 - y2)) / 2 
+					* Math.cos(Math.PI / (Math.abs(x2 - x1)) * (i + 1)) + ((Math.abs(y1
+					- y2)) / 2));
+			System.out.println( i + " x : " + x);
+			System.out.println( i + " y : " + y);
+			
+			grid[i][y] = 1;
+		}
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid[0].length; j++) {
+				System.out.print(grid[j][i] + " ");
+			}
+			System.out.println();
+		}
+		
+		System.out.println("This is \u001b[1;31mRED\u001b[0m and works.");
+	}
+
+	public static void main(String[] args) {
+		Ladder ladder = new Ladder();
+		//ladder.makeLadder(3);
+		ladder.printLadder();
+
+	}
+}

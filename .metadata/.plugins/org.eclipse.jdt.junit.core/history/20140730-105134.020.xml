@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="LadderTest" project="ladder_javajigi" tests="3" started="3" failures="0" errors="0" ignored="0">
+  <testsuite name="ladder.LadderTest" time="0.001">
+    <testcase name="testDrawLineWhenUnderNoOfRows" classname="ladder.LadderTest" time="0.001"/>
+    <testcase name="testDrawLineWhenOverNoOfRows" classname="ladder.LadderTest" time="0.0"/>
+    <testcase name="testRunWhenMultiRows" classname="ladder.LadderTest" time="0.0"/>
+  </testsuite>
+</testrun>
