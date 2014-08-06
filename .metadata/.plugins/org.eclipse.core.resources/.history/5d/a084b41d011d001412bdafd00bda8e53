@@ -1,0 +1,232 @@
+import java.util.Scanner;
+import java.util.LinkedList;
+
+class Rider {
+	boolean finish = !false;
+	Chain pos = new Chain(-1);
+
+	Rider(Chain chain) {
+		pos = chain;
+		printPos();
+	}
+
+	public void moveNext(LinkedList<Chain> chains) {
+		if (chains.get(chains.indexOf(pos)) == chains.getLast()) {
+			System.out.println("end");
+			finish = !true;
+		} else {
+			pos = chains.get(chains.indexOf(pos) + 1);
+			printPos();
+		}
+		
+	}
+
+	public void moveCross() {
+		pos = pos.chain;
+		printPos();
+	}
+
+	public void printPos() {
+		System.out.println(pos.id);
+		System.out.println("id : " + pos.no);
+		System.out.println(pos);
+	}
+
+	public int getID() {
+		return pos.id;
+	}
+}
+
+class Director {
+
+}
+
+class Chain {
+	// 티타늄으로 만든 체인
+	int pos;
+	int id;
+	int no;
+	static int seq;
+	Chain chain;
+
+	Chain(int id) {
+		no = seq++;
+		this.id = id;
+	}
+}
+
+public class Ladder {
+	private LinkedList<LinkedList<Chain>> mash = new LinkedList<LinkedList<Chain>>();
+
+	void makeFrame(int line) {
+		// 세로라인 수만큼 그물 얼개를 짜놓는 거야.
+		for (int i = 0; i < line; i++) {
+			LinkedList<Chain> chains = new LinkedList<Chain>();
+			mash.add(chains);
+		}
+	}
+
+	void linking(int lineA, int lineB) {
+		Chain chainLeft = new Chain(lineA);
+		Chain chainRight = new Chain(lineB);
+		// 체인을 두칸 만들어서
+		chainLeft.chain = chainRight;
+		chainRight.chain = chainLeft;
+		// 2개를 엮는다.
+		mash.get(lineA).add(chainLeft);
+		mash.get(lineB).add(chainRight);
+		// 그 체인을 다른 체인 덩어리에 끼움.
+		// 일단은 뒤에만 끼우자 나중에 addFirst, addLast, add(index, object)로 순서정리 할 수 있도록
+		// 확장.
+	}
+
+	void makeLadder(int line) {
+		makeFrame(line);
+		linking(0, 1);
+		linking(0, 2);
+		linking(1, 2);
+		linking(1, 0);
+	}
+
+	void rideLadder(int line) {
+		Rider rider = new Rider(mash.get(line).getFirst());
+
+		while(rider.finish){
+			if (rider.getID() == -1)
+				rider.moveNext(mash.get(line));
+			else{
+				rider.moveCross();
+				rider.moveNext(mash.get(rider.getID()));
+			}
+		}
+	}
+
+	void printLadder() {
+		
+		//일단 체인들을 정리해야지
+		//체인 각각에 포지션을 부여해줘요.
+		for (int i = 0; i < mash.size(); i++) {
+			for (int j = 0; j < mash.get(i).size(); j++) {
+				mash.get(i).get(j).pos = j;
+			}
+		}
+		
+		//이제 기둥 최고 높이를 알아야 해요.
+		int maxHeight = 0;
+		for (int i = 0; i < mash.size(); i++) {
+			if( mash.get(i).size() > maxHeight)
+				maxHeight = mash.get(i).size();
+		}
+
+		int width = 12;// 기둥거리
+		int height = 6;// anchor 거리
+
+		char[][] grid = new char[maxHeight * height][mash.size() * width];
+
+		// 배열 초기화
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid[0].length; j++) {
+				grid[i][j] = ' ';
+			}
+		}
+
+		// 기둥 만들어야돼.
+		// 기둥 꽂기.
+		for (int j = 0; j < mash.size() * width; j = j + width) {
+			for (int i = 0; i < grid.length; i++) {
+				grid[i][j] = '|';
+			}
+		}
+
+		// 두개의 포인트를 받아서 이쁘게 출력하는게 필요
+		// 내가 알 수 있는 건 2개 포인트야!!
+		// drawBridge(0, 7, 12, 0, grid);
+		// drawBridge(0, 10, 24, 0, grid);
+		// drawBridge(0, 0, 12, 5, grid);
+		
+//		System.out.println(mash.get(0).get(0).id * width);
+//		System.out.println(mash.get(0).get(0).pos * height);
+//		System.out.println(mash.get(1).get(0).id * width);
+//		System.out.println(mash.get(1).get(0).pos * height);
+		
+		int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+		
+		for (int i = 0; i < mash.size(); i++) {
+			for (int j = 0; j <  mash.get(i).size(); j++) {
+				Chain currentChain, nextChain;
+				currentChain = mash.get(i).get(j);
+				nextChain = mash.get(i).get(j).chain;
+				
+				x1 = currentChain.id * width;
+				y1 = currentChain.pos * height;
+				x2 = nextChain.id * width;
+				y2 = nextChain.pos * height;
+				
+				System.out.println(x1);
+				System.out.println(y1);
+				System.out.println(x2);
+				System.out.println(y2);
+//				System.out.println(currentChain.id);
+//				System.out.println(currentChain.pos);
+//				System.out.println(nextChain.id);
+//				System.out.println(nextChain.pos);
+				System.out.println();
+				
+				drawBridge(x1, y1, x2, y2, grid);
+			}
+		}
+		
+		drawBridge(12, 10, 24, 20, grid);
+		
+		
+		// drawBridge(0, 0, 12, 0, grid);
+		// 전체를 그려요.
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid[0].length; j++) {
+				System.out.print(grid[i][j] + " ");
+			}
+			System.out.println();
+		}
+	}
+
+	void drawBridge(int x1, int y1, int x2, int y2, char[][] grid) {
+		x1++;
+		x2++;
+		// ++이 필요한 이유는 post와 겹치지 않게 하기 위함.
+
+		int y;
+
+		// (|y1-y2|)/2 * cos(pi/(|x2-x1|)t) + ((|y1-y2|)/2)
+		// t 구간이 0 ~ pi
+
+		// |y1-y2| pi |y1-y2|
+		// ------- cos(------- t) + -------
+		// 2 |x2-x1| 2
+
+		for (int i = x1; i < x2 - 1; i++) {
+			// x = (int)(Math.PI / grid.length * i);
+			if (y1 - y2 > 0) {
+				y = (int) ((Math.abs(y1 - y2)) / 2
+						* Math.cos(Math.PI / (Math.abs(x2 - x1)) * (i)) + ((Math
+						.abs(y1 - y2)) / 2));
+				grid[y][i] = 'o';
+			} else {
+				y = (int) ((Math.abs(y2 - y1))
+						/ 2
+						* Math.sin(Math.PI / (Math.abs(x2 - x1)) * (i)
+								- (Math.PI / 2)) + ((Math.abs(y1 - y2)) / 2));
+				grid[y][i] = '*';
+			}
+			// System.out.println( i + " x : " + i);
+			// System.out.println( i + " y : " + y);
+		}
+	}
+
+	public static void main(String[] args) {
+		Ladder ladder = new Ladder();
+		ladder.makeLadder(3);
+		ladder.rideLadder(0);
+		ladder.printLadder();
+
+	}
+}
